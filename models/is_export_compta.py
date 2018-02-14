@@ -96,13 +96,8 @@ class is_export_compta(models.Model):
             if obj.journal_id:
                 sql=sql+" and aml.journal_id="+str(obj.journal_id.id)
 
-#            sql=sql+"""
-#                GROUP BY aml.date, ai.number, rp.name, aa.code, ai.type, ai.date_due, rp.supplier,ai.reference,aj.name,aml.name
-#                ORDER BY aml.date, ai.number, rp.name, aa.code, ai.type, ai.date_due, rp.supplier,ai.reference,aj.name,aml.name
-#            """
             cr.execute(sql)
             for row in cr.fetchall():
-                #journal=str(row[7][-2:])
                 journal=str(row[7])
 
                 compte=str(row[1])
@@ -110,11 +105,8 @@ class is_export_compta(models.Model):
                 if journal=='AC':
                     if row[6]:
                         piece=row[6]
-                        #piece=str(row[6].encode('utf-8'))
                 if piece=='None':
                     piece=''
-
-
 
 
                 libelle=row[8]
@@ -126,14 +118,13 @@ class is_export_compta(models.Model):
                     libelle=row[3]
 
                 if compte[0:3]=='512':
-                    libelle=row[3][0:11]+u':'+libelle[-8:]
+                    if row[3]:
+                        libelle=row[3][0:11]+u':'+libelle[-8:]
+                    else:
+                        libelle=u'??:'+libelle[-8:]
 
-
-
-                #print 'libelle=',libelle
-
-                #print row[1],' : ',libelle,' : ',row[11],' : ',row[8]
-
+                if libelle==False:
+                    libelle=u'??'
 
                 vals={
                     'export_compta_id'  : obj.id,
@@ -160,10 +151,6 @@ class is_export_compta(models.Model):
             dest     = '/tmp/'+name
             f = codecs.open(dest,'wb',encoding='utf-8')
 
-            #f = codecs.open(dest,'wb',encoding='ISO-8859-2')
-
-
-
 
             for row in obj.ligne_ids:
 
@@ -178,23 +165,17 @@ class is_export_compta(models.Model):
                 else:
                     montant=row.debit  
                     sens='D'
-                #montant=round(100*montant)
                 montant=(u'000000000000'+'%0.2f' % montant)[-12:]
 
 
                 date_facture=row.date_facture
                 date_facture=datetime.datetime.strptime(date_facture, '%Y-%m-%d')
                 date_facture=date_facture.strftime('%d%m%y')
-                libelle=(row.libelle+u'                    ')[0:20]
-
-
-                #piece1=(row.piece[-5:]+u'        ')[0:5].encode('iso8859')
-                #piece2=(row.piece[-8:]+u'        ')[0:8].encode('iso8859')
+                libelle=row.libelle or u'??'
+                libelle=(libelle+u'                    ')[0:20]
 
                 piece1=(row.piece[-5:]+u'        ')[0:5]
                 piece2=(row.piece[-8:]+u'        ')[0:8]
-
-
 
                 journal=row.journal
                 f.write('M')
@@ -203,19 +184,6 @@ class is_export_compta(models.Model):
                 f.write('000')
                 f.write(date_facture)
                 f.write('F')
-
-
-                #print 'libelle=',libelle,type(libelle)
-
-                #libelle=libelle.encode('iso8859')
-
-                #print 'libelle=',libelle,type(libelle)
-
-#                try:
-#                    f.write(libelle)
-#                except Exception as inst:
-#                    raise Warning(u'Problème accent avec : '+libelle+u' : journal='+journal+' : date_facture='+date_facture)
-
                 f.write(libelle)
                 f.write(sens)
                 f.write('+')
@@ -229,8 +197,6 @@ class is_export_compta(models.Model):
                 f.write('EUR'+journal+'    ')
                 f.write(libelle)
                 f.write('\r\n')
-
-                #f.write(libelle.encode('utf-8'))
             f.close()
             r = open(dest,'rb').read().encode('base64')
             vals = {
