@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="is_invoice_tree" model="ir.ui.view">
+        <field name="name">is_invoice_tree</field>
+        <field name="model">account.invoice</field>
+        <field name="inherit_id" ref="account.invoice_tree"/>
+        <field name="arch" type="xml">
+            <field name="number" position="after">
+                <field name="project_title"/>
+            </field>
+        </field>
+    </record>
+</odoo>
+
