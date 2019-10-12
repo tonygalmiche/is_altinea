@@ -17,15 +17,15 @@
             <field name="model">is.export.compta.ligne</field>
             <field name="arch" type="xml">
                 <tree editable="top">
-                    <field name="date_facture" />
-                    <field name="journal" />
-                    <field name="compte" />
-                    <field name="piece" />
-                    <field name="libelle" />
+                    <field name="date_facture"/>
+                    <field name="journal"/>
+                    <field name="compte"/>
+                    <field name="piece"/>
+                    <field name="libelle"/>
                     <field name="debit"  sum="Total"/>
                     <field name="credit" sum="Total"/>
-                    <field name="devise" />
-                    <field name="commentaire" />
+                    <field name="devise"/>
+                    <field name="commentaire"/>
                 </tree>
             </field>
         </record>
@@ -105,8 +105,9 @@
                     <sheet>
                         <group>
                             <group>
-                                <field name="name" />
-                                <field name="journal_id" />
+                                <field name="name"/>
+                                <field name="journal_id"/>
+                                <field name="format_export"/>
                             </group>
                         </group>
                         <group>
@@ -134,7 +135,7 @@
 
         <!-- Export comptable -->
         <record id="is_export_quadratus_action" model="ir.actions.act_window">
-            <field name="name">Export Quadratus</field>
+            <field name="name">Export Compta</field>
             <field name="res_model">is.export.compta</field>
             <field name="view_type">form</field>
             <field name="view_mode">tree,form</field>

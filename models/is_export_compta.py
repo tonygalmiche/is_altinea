@@ -10,11 +10,12 @@ class is_export_compta(models.Model):
     _name='is.export.compta'
     _order='name desc'
 
-    name               = fields.Char(u"N°Folio"      , readonly=True)
-    journal_id         = fields.Many2one('account.journal', u'Journal')
-    date_debut         = fields.Date(u"Date de début", required=True)
-    date_fin           = fields.Date(u"Date de fin"  , required=True)
-    ligne_ids          = fields.One2many('is.export.compta.ligne', 'export_compta_id', u'Lignes')
+    name          = fields.Char(u"N°Folio"      , readonly=True)
+    format_export = fields.Selection([('quadratus','Quadratus'),('csv1','CSV séparateur ;')], u"Format d'exportation", default='csv1', required=1)
+    journal_id    = fields.Many2one('account.journal', u'Journal')
+    date_debut    = fields.Date(u"Date de début", required=True)
+    date_fin      = fields.Date(u"Date de fin"  , required=True)
+    ligne_ids     = fields.One2many('is.export.compta.ligne', 'export_compta_id', u'Lignes')
     _defaults = {
     }
 
@@ -147,56 +148,95 @@ class is_export_compta(models.Model):
             model='is.export.compta'
             attachments = self.env['ir.attachment'].search([('res_model','=',model),('res_id','=',obj.id)])
             attachments.unlink()
+
             name='export-compta.txt'
+            if obj.format_export=='csv1':
+                name='export-compta.csv'
+
             dest     = '/tmp/'+name
             f = codecs.open(dest,'wb',encoding='utf-8')
 
+            if obj.format_export=='quadratus':
+                for row in obj.ligne_ids:
+                    compte=str(row.compte)
+                    if compte=='None':
+                        compte=''
+                    debit=row.debit
+                    credit=row.debit
+                    if row.credit>0.0:
+                        montant=row.credit  
+                        sens='C'
+                    else:
+                        montant=row.debit  
+                        sens='D'
+                    montant=(u'000000000000'+'%0.2f' % montant)[-12:]
+                    date_facture=row.date_facture
+                    date_facture=datetime.datetime.strptime(date_facture, '%Y-%m-%d')
+                    date_facture=date_facture.strftime('%d%m%y')
+                    libelle=row.libelle or u'??'
+                    libelle=(libelle+u'                    ')[0:20]
+                    piece1=(row.piece[-5:]+u'        ')[0:5]
+                    piece2=(row.piece[-8:]+u'        ')[0:8]
+                    journal=row.journal
+                    f.write('M')
+                    f.write((compte+u'00000000')[0:8])
+                    f.write(journal)
+                    f.write('000')
+                    f.write(date_facture)
+                    f.write('F')
+                    f.write(libelle)
+                    f.write(sens)
+                    f.write('+')
+                    f.write(montant)
+                    f.write('        ')
+                    f.write('000000')
+                    f.write('     ')
+                    f.write(piece1)
+                    f.write('                    ')
+                    f.write(piece2)
+                    f.write('EUR'+journal+'    ')
+                    f.write(libelle)
+                    f.write('\r\n')
 
-            for row in obj.ligne_ids:
 
-                compte=str(row.compte)
-                if compte=='None':
-                    compte=''
-                debit=row.debit
-                credit=row.debit
-                if row.credit>0.0:
-                    montant=row.credit  
-                    sens='C'
-                else:
-                    montant=row.debit  
-                    sens='D'
-                montant=(u'000000000000'+'%0.2f' % montant)[-12:]
+            if obj.format_export=='csv1':
+                for row in obj.ligne_ids:
+                    compte=str(row.compte)
+                    if compte=='None':
+                        compte=''
+                    debit=row.debit
+                    credit=row.debit
+                    if row.credit>0.0:
+                        montant=row.credit  
+                        sens='C'
+                    else:
+                        montant=row.debit  
+                        sens='D'
+                    montant=('%0.2f' % montant)[-12:]
+                    date_facture=row.date_facture
+                    date_facture=datetime.datetime.strptime(date_facture, '%Y-%m-%d')
+                    date_facture=date_facture.strftime('%d/%m/%y')
+                    libelle=row.libelle or u'??'
+                    libelle=(libelle)[0:20]
+                    piece1=(row.piece)
+                    journal=row.journal
+
+                    f.write(compte)
+                    f.write(';')
+                    f.write(journal)
+                    f.write(';')
+                    f.write(date_facture)
+                    f.write(';')
+                    f.write(sens)
+                    f.write(';')
+                    f.write(montant)
+                    f.write(';')
+                    f.write(piece1)
+                    f.write(';')
+                    f.write(libelle)
+                    f.write('\r\n')
 
 
-                date_facture=row.date_facture
-                date_facture=datetime.datetime.strptime(date_facture, '%Y-%m-%d')
-                date_facture=date_facture.strftime('%d%m%y')
-                libelle=row.libelle or u'??'
-                libelle=(libelle+u'                    ')[0:20]
-
-                piece1=(row.piece[-5:]+u'        ')[0:5]
-                piece2=(row.piece[-8:]+u'        ')[0:8]
-
-                journal=row.journal
-                f.write('M')
-                f.write((compte+u'00000000')[0:8])
-                f.write(journal)
-                f.write('000')
-                f.write(date_facture)
-                f.write('F')
-                f.write(libelle)
-                f.write(sens)
-                f.write('+')
-                f.write(montant)
-                f.write('        ')
-                f.write('000000')
-                f.write('     ')
-                f.write(piece1)
-                f.write('                    ')
-                f.write(piece2)
-                f.write('EUR'+journal+'    ')
-                f.write(libelle)
-                f.write('\r\n')
             f.close()
             r = open(dest,'rb').read().encode('base64')
             vals = {
