@@ -22,6 +22,8 @@ InfoSaône - Module Odoo pour ALTINEA
     'data' : [
         'security/ir.model.access.csv',
         'views/assets.xml',
+        'views/partner_view.xml',
+        'views/crm_lead_views.xml',
         'views/is_export_compta_view.xml',
         'views/sale_view.xml',
         'views/account_invoice_view.xml',

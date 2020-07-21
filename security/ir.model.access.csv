@@ -1,4 +1,8 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 access_is_export_compta,access_is_export_compta,model_is_export_compta,base.group_user,1,1,1,1
 access_is_export_compta_ligne,access_is_export_compta_ligne,model_is_export_compta_ligne,base.group_user,1,1,1,1
+access_is_effectif,access_is_effectif,model_is_effectif,base.group_user,1,1,1,1
+access_is_secteur_activite,access_is_secteur_activite,model_is_secteur_activite,base.group_user,1,1,1,1
+access_is_forme_juridique,access_is_forme_juridique,model_is_forme_juridique,base.group_user,1,1,1,1
+access_is_motif_refus,access_is_motif_refus,model_is_motif_refus,base.group_user,1,1,1,1
 

@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="is_view_partner_form" model="ir.ui.view">
+            <field name="name">is_view_partner_form</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_form"/>
+            <field name="arch" type="xml">
+                <field name="category_id" position="after">
+                    <field name="is_responsable_dossier_technique_id" attrs="{'invisible': [('is_company','!=', True)]}"/>
+                    <field name="is_responsable_commercial_id"        attrs="{'invisible': [('is_company','!=', True)]}"/>
+                    <field name="create_date" readonly="1" string="Date de création"/>
+                </field>
+                <field name="email" position="replace">
+                    <field name="email" string="Courriel comptabilité" widget="phone"/>
+                    <field name="is_courriel_entreprise"               widget="phone"/>
+                    <field name="is_forme_juridique_id"  attrs="{'invisible': [('is_company','!=', True)]}"/>
+                    <field name="is_secteur_activite_id" attrs="{'invisible': [('is_company','!=', True)]}"/>
+                    <field name="is_siret"               attrs="{'invisible': [('is_company','!=', True)]}"/>
+                    <field name="is_naf"                 attrs="{'invisible': [('is_company','!=', True)]}"/>
+                    <field name="is_effectif_id"         attrs="{'invisible': [('is_company','!=', True)]}"/>
+
+                </field>
+            </field>
+        </record>
+
+        <record id="is_view_partner_property_form" model="ir.ui.view">
+            <field name="name">is_view_partner_property_form</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="account.view_partner_property_form"/>
+            <field name="arch" type="xml">
+                <field name="property_payment_term_id" position="before">
+                    <field name="is_ca_n1"/>
+                    <field name="is_ca_n"/>
+                </field>
+            </field>
+        </record>
+
+        <record id="is_view_partner_tree" model="ir.ui.view">
+            <field name="name">is_view_partner_tree</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_tree"/>
+            <field name="arch" type="xml">
+                <field name="email" position="replace">
+                    <field name="email" string="Courriel comptabilité" widget="phone"/>
+                    <field name="is_courriel_entreprise"               widget="phone"/>
+                    <field name="is_responsable_dossier_technique_id"/>
+                    <field name="is_responsable_commercial_id"/>
+                    <field name="is_secteur_activite_id"/>
+                    <field name="is_effectif_id"/>
+                    <field name="create_date" string="Date de création"/>
+                </field>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="is_view_res_partner_filter">
+            <field name="name">is_view_res_partner_filter</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_res_partner_filter"/>
+            <field name="arch" type="xml">
+                <field name="name" position="after">
+                    <field name="is_responsable_dossier_technique_id"/>
+                    <field name="is_responsable_commercial_id"/>
+                    <field name="is_secteur_activite_id"/>
+                    <field name="is_effectif_id"/>
+                </field>
+            </field>
+        </record>
+
+
+        <!-- is.effectif --> 
+        <record id="is_effectif_form" model="ir.ui.view">
+            <field name="name">is.effectif.form</field>
+            <field name="model">is.effectif</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <field name="name" />
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        <record id="is_effectif_tree" model="ir.ui.view">
+            <field name="name">is.effectif.tree</field>
+            <field name="model">is.effectif</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name" />
+                </tree>
+            </field>
+        </record>
+        <record id="is_effectif_search" model="ir.ui.view">
+            <field name="name">is.effectif.search</field>
+            <field name="model">is.effectif</field>
+            <field name="arch" type="xml">
+                <search>
+                    <field name="name" />
+               </search>
+            </field>
+        </record>
+        <record  id="is_effectif_action" model="ir.actions.act_window">
+            <field name="name">Effectif</field>
+            <field name="res_model">is.effectif</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+        <menuitem
+            name="Tables"
+            id="is_ventes_tables_menu" 
+            parent="sales_team.menu_base_partner" sequence="900"
+        />
+        <menuitem   
+            action="is_effectif_action"  
+            id="is_effectif_menu" 
+            parent="is_ventes_tables_menu" sequence="10"
+        />
+
+
+
+
+        <!-- is.forme.juridique --> 
+        <record id="is_forme_juridique_form" model="ir.ui.view">
+            <field name="name">is.forme.juridique.form</field>
+            <field name="model">is.forme.juridique</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <field name="name" />
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        <record id="is_forme_juridique_tree" model="ir.ui.view">
+            <field name="name">is.forme.juridique.tree</field>
+            <field name="model">is.forme.juridique</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name" />
+                </tree>
+            </field>
+        </record>
+        <record id="is_forme_juridique_search" model="ir.ui.view">
+            <field name="name">is.forme.juridique.search</field>
+            <field name="model">is.forme.juridique</field>
+            <field name="arch" type="xml">
+                <search>
+                    <field name="name" />
+               </search>
+            </field>
+        </record>
+        <record  id="is_forme_juridique_action" model="ir.actions.act_window">
+            <field name="name">Forme juridique</field>
+            <field name="res_model">is.forme.juridique</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+        <menuitem   
+            action="is_forme_juridique_action"  
+            id="is_forme_juridique_menu" 
+            parent="is_ventes_tables_menu" sequence="20"
+        />
+
+
+        <!-- is.secteur.activite --> 
+        <record id="is_secteur_activite_form" model="ir.ui.view">
+            <field name="name">is.secteur.activite.form</field>
+            <field name="model">is.secteur.activite</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <field name="name" />
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        <record id="is_secteur_activite_tree" model="ir.ui.view">
+            <field name="name">is.secteur.activite.tree</field>
+            <field name="model">is.secteur.activite</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name" />
+                </tree>
+            </field>
+        </record>
+        <record id="is_secteur_activite_search" model="ir.ui.view">
+            <field name="name">is.secteur.activite.search</field>
+            <field name="model">is.secteur.activite</field>
+            <field name="arch" type="xml">
+                <search>
+                    <field name="name" />
+               </search>
+            </field>
+        </record>
+        <record  id="is_secteur_activite_action" model="ir.actions.act_window">
+            <field name="name">Secteur d'activité</field>
+            <field name="res_model">is.secteur.activite</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+        <menuitem
+            action="is_secteur_activite_action"  
+            id="is_secteur_activite_menu" 
+            parent="is_ventes_tables_menu" sequence="30"
+        />
+    </data>
+</odoo>
+
