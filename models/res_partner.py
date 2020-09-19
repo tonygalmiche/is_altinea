@@ -29,25 +29,25 @@ class ResPartner(models.Model):
         date_debut = str(year)+'-10-01'
         date_fin   = str(year+1)+'-10-01'
         for obj in self:
-            sql="""
-                SELECT type,sum(amount_untaxed)
-                FROM account_invoice
-                WHERE 
-                    partner_id="""+str(obj.id)+""" and
-                    date_invoice>='"""+date_debut+"""' and 
-                    date_invoice<'"""+date_fin+"""' and
-                    type in ('out_invoice','out_refund') and
-                    state in ('open','paid')
-                GROUP BY type
-            """
-            cr.execute(sql)
             ca = 0
-            for row in cr.fetchall():
-                if row[0]=='out_refund':
-                    ca = ca - row[1]
-                else:
-                    ca = ca + row[1]
-            #print date_debut, date_fin,ca
+            if obj.id:
+                sql="""
+                    SELECT type,sum(amount_untaxed)
+                    FROM account_invoice
+                    WHERE 
+                        partner_id="""+str(obj.id)+""" and
+                        date_invoice>='"""+date_debut+"""' and 
+                        date_invoice<'"""+date_fin+"""' and
+                        type in ('out_invoice','out_refund') and
+                        state in ('open','paid')
+                    GROUP BY type
+                """
+                cr.execute(sql)
+                for row in cr.fetchall():
+                    if row[0]=='out_refund':
+                        ca = ca - row[1]
+                    else:
+                        ca = ca + row[1]
             return ca
 
 

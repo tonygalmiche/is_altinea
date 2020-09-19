@@ -6,6 +6,18 @@
             <field name="model">crm.lead</field>
             <field name="inherit_id" ref="crm.crm_case_form_view_leads"/>
             <field name="arch" type="xml">
+                <field name="email_from" position="replace">
+                    <field name="email_from" string="Courriel comptabilité" widget="phone"/>
+                    <field name="is_courriel_entreprise"                    widget="phone"/>
+                </field>
+                <field name="fax" position="after">
+                    <field name="is_forme_juridique_id"/>
+                    <field name="is_secteur_activite_id"/>
+                    <field name="is_siret"/>
+                    <field name="is_naf"/>
+                    <field name="is_effectif_id"/>
+                    <field name="is_website"/>
+                </field>
                 <field name="team_id" position="after">
                     <field name="is_motif_refus_id"/>
                 </field>
@@ -17,6 +29,12 @@
             <field name="model">crm.lead</field>
             <field name="inherit_id" ref="crm.crm_case_tree_view_leads"/>
             <field name="arch" type="xml">
+                <field name="email_from" position="replace">
+                    <field name="email_from" string="Courriel comptabilité"/>
+                    <field name="is_courriel_entreprise"/>
+                    <field name="is_secteur_activite_id"/>
+                    <field name="is_effectif_id"/>
+                </field>
                 <field name="team_id" position="after">
                     <field name="is_motif_refus_id"/>
                 </field>
@@ -29,6 +47,11 @@
             <field name="arch" type="xml">
                 <field name="team_id" position="after">
                     <field name="is_motif_refus_id"/>
+                    <field name="is_courriel_entreprise"/>
+                    <field name="is_forme_juridique_id"/>
+                    <field name="is_secteur_activite_id"/>
+                    <field name="is_naf"/>
+                    <field name="is_effectif_id"/>
                 </field>
             </field>
         </record>
