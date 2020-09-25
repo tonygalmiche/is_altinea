@@ -68,6 +68,7 @@ class ResPartner(models.Model):
     is_siret                            = fields.Char(u'SIRET')
     is_naf                              = fields.Char(u'NAF')
     is_effectif_id                      = fields.Many2one('is.effectif', u'Effectif')
+    is_ca_entreprise                    = fields.Integer(u'CA Entreprise')
     is_forme_juridique_id               = fields.Many2one('is.forme.juridique', u'Forme juridique')
     is_secteur_activite_id              = fields.Many2one('is.secteur.activite', u"Secteur d'activité")
     is_ca_n                             = fields.Integer(u'CA année N'  , compute=_compute_is_ca, store=False, help=u"CA HT facturé du 1er octobre au 30 septembre")

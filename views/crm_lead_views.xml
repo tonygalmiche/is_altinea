@@ -16,6 +16,7 @@
                     <field name="is_siret"/>
                     <field name="is_naf"/>
                     <field name="is_effectif_id"/>
+                    <field name="is_ca_entreprise"/>
                     <field name="is_website"/>
                 </field>
                 <field name="team_id" position="after">
@@ -34,6 +35,7 @@
                     <field name="is_courriel_entreprise"/>
                     <field name="is_secteur_activite_id"/>
                     <field name="is_effectif_id"/>
+                    <field name="is_ca_entreprise"/>
                 </field>
                 <field name="team_id" position="after">
                     <field name="is_motif_refus_id"/>

@@ -21,6 +21,7 @@ class Lead(FormatAddress, models.Model):
     is_naf                 = fields.Char(u'NAF')
     is_effectif_id         = fields.Many2one('is.effectif', u'Effectif')
     is_website             = fields.Char(u'Site Web')
+    is_ca_entreprise       = fields.Integer(u'CA Entreprise')
 
 
     @api.multi
@@ -59,6 +60,7 @@ class Lead(FormatAddress, models.Model):
             'is_siret': self.is_siret,
             'is_naf': self.is_naf,
             'is_effectif_id': self.is_effectif_id.id,
+            'is_ca_entreprise': self.is_ca_entreprise,
             'website': self.is_website,
         }
         return self.env['res.partner'].create(values)

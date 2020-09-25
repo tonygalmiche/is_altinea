@@ -19,6 +19,7 @@
                     <field name="is_siret"               attrs="{'invisible': [('is_company','!=', True)]}"/>
                     <field name="is_naf"                 attrs="{'invisible': [('is_company','!=', True)]}"/>
                     <field name="is_effectif_id"         attrs="{'invisible': [('is_company','!=', True)]}"/>
+                    <field name="is_ca_entreprise"       attrs="{'invisible': [('is_company','!=', True)]}"/>
 
                 </field>
             </field>
@@ -48,6 +49,7 @@
                     <field name="is_responsable_commercial_id"/>
                     <field name="is_secteur_activite_id"/>
                     <field name="is_effectif_id"/>
+                    <field name="is_ca_entreprise"/>
                     <field name="create_date" string="Date de création"/>
                 </field>
             </field>
