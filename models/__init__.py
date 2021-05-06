@@ -5,4 +5,6 @@ import sale
 import account_analytic_account
 import res_partner
 import crm_lead
+import purchase
+
 

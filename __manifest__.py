@@ -26,6 +26,7 @@ InfoSaône - Module Odoo pour ALTINEA
         'views/crm_lead_views.xml',
         'views/is_export_compta_view.xml',
         'views/sale_view.xml',
+        'views/purchase_views.xml',
         'views/account_invoice_view.xml',
         'views/account_analytic_account_view.xml',
     ],
