@@ -18,3 +18,10 @@ class SaleOrder(models.Model):
         vals['project_title'] = self.project_title or ''
         return vals
 
+
+    @api.multi
+    def copy(self, default=None):
+        order = super(SaleOrder, self).copy(default=default)
+        order.message_follower_ids.unlink()
+        order.user_id=self._uid
+        return order
